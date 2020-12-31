@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project progress</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+</head>
+<body>
+<style>
+    body{
+       display:inline-block;}
+</style>
+</body>
+<script>
+var data = {{data|safe}}
+var charts = []
+
+for (var key in data) {
+    labels = []
+    var i;
+    for (i = 1; i <= data[key]["OTWORY"].length; i++) {
+        labels.push("day"+i.toString())
+    }
+    charts.push(
+        {values: data[key], labels: labels, project_name:key}
+    )
+}
+console.log(charts)
+
+var count = 0;
+for(var i in charts){
+    var chart = charts[i];
+    var canvas = document.createElement('canvas');
+    var id = "CursorLayer" + count.toString();
+    canvas.id = id;
+
+    canvas.width = 700;
+    canvas.height = 400;
+    canvas.style.border = "1px solid";
+
+    document.body.appendChild(canvas);
+
+    cursorLayer = document.getElementById(id);
+    console.log(cursorLayer);
+    console.log(chart)
+    var chart = new Chart(cursorLayer, {
+      type: 'line',
+      data: {
+        labels: chart["labels"],
+        datasets: [{
+            data: chart["values"]["OTWORY"],
+            label: "OTWORY",
+            borderColor: "#3e95cd",
+            fill: false
+          }, {
+            data: chart["values"]["KORYTKA"],
+            label: "KORYTKA",
+            borderColor: "#8e5ea2",
+            fill: false
+          }, {
+            data: chart["values"]["LISTWY"],
+            label: "LISTWY",
+            borderColor: "#3cba9f",
+            fill: false
+          }, {
+            data: chart["values"]["SZAFY"],
+            label: "SZAFY",
+            borderColor: "#e8c3b9",
+            fill: false
+          }, {
+            data: chart["values"]["KABLI"],
+            label: "KABLI",
+            borderColor: "#FF8C00",
+            fill: false
+          }, {
+            data: chart["values"]["ZARABIANIE"],
+            label: "ZARABIANIE",
+            borderColor: "#c45850",
+            fill: false
+          }, {
+            data: chart["values"]["OZNAKOWANIE"],
+            label: "OZNAKOWANIE",
+            borderColor: "#ADFF2F",
+            fill: false
+          }, {
+            data: chart["values"]["POMIARY"],
+            label: "POMIARY",
+            borderColor: "#191970",
+            fill: false
+          }
+        ]
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'Progres projektu: ' +chart["project_name"]
+        }
+      }
+});
+
+
+    count += 1;
+}
+
+
+
+</script>
+</html>
